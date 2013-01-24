@@ -5,3 +5,6 @@ Simperium is a simple way for developers to move data as it changes, instantly a
 You can [sign up](http://simperium.com) for a hosted version of Simperium. Self-hosted options are on the way. There are Simperium libraries for [other languages](https://simperium.com/overview/) too.
 
 This is not yet a full Simperium library for parsing diffs and changes. It's a wrapper for our [HTTP API](https://simperium.com/docs/http/) intended for scripting and basic backend development.
+
+### License
+The Simperium Ruby library is available for free and commercial use under the MIT license.
