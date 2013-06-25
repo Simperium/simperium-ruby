@@ -155,7 +155,6 @@ module Simperium
                 opts = opts.merge({:timeout => timeout})
             end
             
-            puts opts
             begin
                 response = RestClient::Request.execute(opts)
             rescue SocketError => e
