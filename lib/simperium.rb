@@ -12,6 +12,12 @@ UUID.state_file = false
 module Simperium
     class Auth
         def initialize(appname, api_key, host=nil,scheme='https')
+            if appname == nil
+              raise ArgumentError, "App name is required."
+            end
+            if api_key == nil
+              raise ArgumentError, "API key is required."
+            end
             if host == nil
                 host = ENV['SIMPERIUM_AUTHHOST'] || 'auth.simperium.com'
             end
