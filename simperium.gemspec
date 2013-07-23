@@ -15,7 +15,10 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('rest-client', '~> 1.4')
   s.add_dependency('uuid')
   s.add_dependency('json')
-  
+
+  s.add_development_dependency('rake')
+  s.add_development_dependency('mongo')
+
   s.files = `git ls-files`.split("\n")
   s.require_paths = ['lib']
 end

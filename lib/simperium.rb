@@ -1,6 +1,5 @@
 # Simperium Ruby bindings
 # API spec at https://simperium.com/docs/reference
-require 'rubygems'
 require 'rest_client'
 require 'json'
 require 'uuid'
@@ -281,7 +280,7 @@ module Simperium
 
         def new(data, ccid=nil)
             uuid = UUID.new
-            return self.post(uuid.generate(:compact), data, ccid=ccid)
+            return self.post(uuid.generate(:compact), data, :ccid => ccid)
         end
 
         def set(item, data, options={})
