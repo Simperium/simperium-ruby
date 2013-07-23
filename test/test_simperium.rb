@@ -84,4 +84,11 @@ class TestSimperium < Test::Unit::TestCase
         api = Simperium::Api.new(@@appname, get_auth_token)
         assert_instance_of(Simperium::SPUser, api.spuser, "api.user should be an instance of User")
     end
+
+    def test_create_bucket_object
+        api = Simperium::Api.new(@@appname, get_auth_token)
+        id = api.todo.new({'title' => 'Create a startup to kill email', 'done' => false})
+        assert_not_nil(id)
+    end
+
 end
