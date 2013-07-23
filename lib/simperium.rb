@@ -1,6 +1,5 @@
 # Simperium Ruby bindings
 # API spec at https://simperium.com/docs/reference
-require 'rubygems'
 require 'rest_client'
 require 'json'
 require 'uuid'
