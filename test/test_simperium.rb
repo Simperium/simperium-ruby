@@ -18,7 +18,7 @@ def get_auth_token
     return @@_auth_token
 end
 
-class TestSimperiumRuby < Test::Unit::TestCase
+class TestSimperium < Test::Unit::TestCase
     def test_auth_create
         get_auth_token
     end
