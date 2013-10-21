@@ -19,6 +19,11 @@ def get_auth_token
 end
 
 class TestSimperium < Test::Unit::TestCase
+
+    def setup
+        WebMock.allow_net_connect!
+    end
+
     def test_auth_create
         get_auth_token
     end
@@ -34,7 +39,7 @@ class TestSimperium < Test::Unit::TestCase
         uuid = UUID.new
         bucket = Simperium::Bucket.new(@@appname, get_auth_token, uuid.generate(:compact))
         (0..2).each { |i| bucket.post("item#{i}", {'x' => i}) }
-        
+
         got = bucket.index(:data=>false,  :mark=>nil, :limit=>2, :since=>nil)
         want = {
             'current' => got['current'],
