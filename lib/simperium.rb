@@ -5,6 +5,7 @@ require 'json'
 require 'uuid'
 
 require 'simperium/auth'
+require 'simperium/api'
 require 'simperium/error_handling'
 
 #state file is not shared between processes on Heroku
@@ -306,44 +307,14 @@ module Simperium
         end
     end
 
-    class Api
-        def initialize(appname, auth_token, options={})
-            @appname = appname
-            @token = auth_token
-            @_options = options
-
-            @getitem = {}
-        end
-
-        def method_missing(method_sym, *arguments, &block)
-            #the first argument is a Symbol, so you need to_s it you want to pattern match
-            unless method_sym.to_s =~ /=$/
-                if method_sym.to_s == 'spuser'
-                    @getitem[method_sym] ||= Simperium::SPUser.new(@appname, @token)
-                else
-                    @getitem[method_sym] ||= Simperium::Bucket.new(@appname, @token, method_sym)
-                end
-            end
-        end
-
-        def respond_to?(method_sym, include_private = false)
-            if method_sym.to_s =~ /^(.*)$/
-              true
-            else
-              super
-            end
-          end
-    end
-
     class Admin < Api
-        def initialize(appname, admin_token, options={})
+        def initialize(appname, admin_token)
             @appname = appname
             @token = admin_token
-            @_options = options
         end
 
         def as_user(userid)
-            return Simperium::Api.new(@appname, @token, userid=userid, @_options)
+            return Simperium::Api.new(@appname, @token, userid=userid)
         end
     end
 end
