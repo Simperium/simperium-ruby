@@ -6,6 +6,7 @@ require 'uuid'
 
 require 'simperium/auth'
 require 'simperium/api'
+require 'simperium/sp_user'
 require 'simperium/error_handling'
 
 #state file is not shared between processes on Heroku
@@ -277,33 +278,6 @@ module Simperium
 
             response = self._request(url, data=nil, headers=headers, method='GET', timeout=timeout)
             return JSON.load(response.body)
-        end
-    end
-
-    class SPUser
-        def initialize(appname, auth_token, options={})
-            defaults = {:host=>nil, :scheme=>'https', :clientid=>nil}
-            unless options.empty?
-                options = defaults.merge(options)
-            else
-                options = defaults
-            end
-
-            @bucket = Simperium::Bucket.new(appname, auth_token, 'spuser',
-                options=options)
-
-            url = "#{appname}/user"
-            response = @bucket._request(url, data=nil, headers=@bucket._auth_header(), method='GET')
-            response = JSON.load(response.body)
-            @userid = response['userid']
-        end
-
-        def get
-            return @bucket.get('info')
-        end
-
-        def post(data)
-            @bucket.post('info', data)
         end
     end
 end
