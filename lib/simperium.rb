@@ -306,15 +306,4 @@ module Simperium
             @bucket.post('info', data)
         end
     end
-
-    class Admin < Api
-        def initialize(appname, admin_token)
-            @appname = appname
-            @token = admin_token
-        end
-
-        def as_user(userid)
-            return Simperium::Api.new(@appname, @token, userid=userid)
-        end
-    end
 end
