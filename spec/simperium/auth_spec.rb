@@ -54,6 +54,17 @@ describe Simperium::Auth, '#create' do
 
     auth.create("1382355902@foo.com", 'password').must_equal 'bf096b290d174402896522cf89b3c5'
   end
+
+  it "returns the response data for the user" do
+    auth = Simperium::Auth.new('blazing-saddles', '123456')
+    data = auth.create("1382355902@foo.com", 'password', verbose: true)
+
+    data.must_equal(
+      "username" => "1382355902@foo.com",
+      "access_token" => "bf096b290d174402896522cf89b3c5",
+      "userid" => "5b4e0569270381b10fabb92b1f5f8fc3"
+    )
+  end
 end
 
 describe Simperium::Auth, '#authorize' do

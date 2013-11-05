@@ -12,7 +12,16 @@ module Simperium
       @scheme  = scheme.to_str
     end
 
-    def create(username, password)
+    # Public: Creates a new Simperium User.
+    #
+    # username - The Simperium username.
+    # password - The Simperium password.
+    # options  - The Hash options to configure the response.
+    #            :verbose - The Boolean to determine response (default: false).
+    #
+    # Returns the access token. If the verbose option is enabled, it returns the
+    # entire response data.
+    def create(username, password, options = {})
       data = {
         'client_id' => @api_key,
         'username'  => username,
@@ -20,7 +29,9 @@ module Simperium
 
       response = request(@appname + '/create/', data)
 
-      JSON.load(response.body)['access_token']
+      response_data = JSON.load(response.body)
+
+      options[:verbose] ? response_data : response_data['access_token']
     end
 
     def authorize(username, password)
