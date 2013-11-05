@@ -1,19 +1,23 @@
 module Simperium
   class Api
+    attr_reader :app_id
+    attr_reader :auth_token
+
     def initialize(app_id, auth_token)
       @app_id  = app_id
       @token   = auth_token
 
-      @getitem = {}
+      @cache   = {}
+    end
+
+    # Instantiates an SPUser.
+    def spuser
+      bucket_cache 'spuser', Simperium::SPUser.new(@app_id, @token)
     end
 
     def method_missing(method_sym, *arguments, &block)
       unless method_sym.to_s =~ /=$/ # Ignore setters
-        if method_sym.to_s == 'spuser'
-          cache_bucket method_sym, Simperium::SPUser.new(@app_id, @token)
-        else
-          cache_bucket method_sym, Simperium::Bucket.new(@app_id, @token, method_sym)
-        end
+        bucket_cache method_sym, Simperium::Bucket.new(@app_id, @token, method_sym)
       end
     end
 
@@ -27,8 +31,8 @@ module Simperium
 
     private
 
-    def cache_bucket(cache_key, bucket)
-      @getitem[cache_key] ||= bucket
+    def bucket_cache(cache_key, bucket)
+      @cache[cache_key] ||= bucket
     end
   end
 end

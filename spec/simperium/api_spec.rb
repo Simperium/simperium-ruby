@@ -14,7 +14,7 @@ describe Simperium::Api, '#method_missing?' do
   it "caches the Simperium::Bucket" do
     bucket = api.todo
 
-    api.instance_variable_get(:@getitem)[:todo].must_equal bucket
+    api.instance_variable_get(:@cache)[:todo].must_equal bucket
   end
 
   it "returns an instance of SPUser"
