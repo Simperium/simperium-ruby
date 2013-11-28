@@ -209,7 +209,7 @@ module Simperium
 
         def delete(item, version=nil)
             ccid = self._gen_ccid()
-            url = "#{@appname}/#{@bucket}/i/{item}"
+            url = "#{@appname}/#{@bucket}/i/#{item}"
 
             if version
                 url += "/v/#{version}"
