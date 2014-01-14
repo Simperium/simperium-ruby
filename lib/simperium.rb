@@ -14,7 +14,7 @@ UUID.state_file = false
 
 module Simperium
   class Bucket
-    def initialize(appname, auth_token, bucket, options={})
+    def initialize(appname, auth_token, bucket, options = {})
       defaults = { :userid => nil, :host => nil, :scheme => 'https', :clientid => nil }
       unless options.empty?
         options = defaults.merge(options)
@@ -22,37 +22,21 @@ module Simperium
         options = defaults
       end
 
-      if options[:host] == nil
-        options[:host] = ENV['SIMPERIUM_APIHOST'] || 'api.simperium.com'
-      end
+      options[:host] ||= ENV['SIMPERIUM_APIHOST'] || 'api.simperium.com'
 
-      @userid = options[:userid]
-      @host = options[:host]
-      @scheme = options[:scheme]
-      @appname = appname
-      @bucket = bucket
+      @userid     = options[:userid]
+      @host       = options[:host]
+      @scheme     = options[:scheme]
+      @appname    = appname
+      @bucket     = bucket
       @auth_token = auth_token
-
-      if options[:clientid] == nil
-        uuid = UUID.new
-        random_string = uuid.generate(:compact)
-        @clientid = "rb-#{random_string}"
-      else
-        @clientid = options[:clientid]
-      end
+      @clientid   = options[:clientid] || "rb-#{generate_ccid}"
     end
 
     def _auth_header
       headers = {"X-Simperium-Token" => "#{@auth_token}"}
-      unless @userid.nil?
-        headers["X-Simperium-User"] = @userid
-      end
-      return headers
-    end
-
-    def _gen_ccid
-      ccid = UUID.new
-      return ccid.generate(:compact)
+      headers["X-Simperium-User"] = @userid unless @userid.nil?
+      headers
     end
 
     def _request(url, data=nil, headers=nil, method=nil, timeout=nil)
@@ -117,8 +101,6 @@ module Simperium
       since = options[:since]
 
       url = "#{@appname}/#{@bucket}/index?"
-
-
       url += "&data=1" if data
       url += "&mark=#{mark.to_str}" if mark
       url += "&limit=#{limit.to_s}" if limit
@@ -158,8 +140,7 @@ module Simperium
       include_response = options[:include_response]
       replace = options[:replace]
 
-
-      ccid = self._gen_ccid() if ccid.nil?
+      ccid = self.generate_ccid if ccid.nil?
 
       url = "#{@appname}/#{@bucket}/i/#{item}"
       url += "/v/#{version}" if version
@@ -179,16 +160,15 @@ module Simperium
     end
 
     def new(data, ccid=nil)
-      uuid = UUID.new
-      return self.post(uuid.generate(:compact), data, :ccid => ccid)
+      self.post(generate_ccid, data, :ccid => ccid)
     end
 
     def set(item, data, options={})
-      return self.post(item, data, options)
+      self.post(item, data, options)
     end
 
     def delete(item, version=nil)
-      ccid = self._gen_ccid()
+      ccid = self.generate_ccid
       url = "#{@appname}/#{@bucket}/i/#{item}"
       url += "/v/#{version}" if version
       url += "?clientid=#{@clientid}&ccid=#{ccid}"
@@ -244,6 +224,15 @@ module Simperium
 
       response = self._request(url, data=nil, headers=headers, method='GET', timeout=timeout)
       return JSON.load(response.body)
+    end
+
+    private
+
+    # Generates a UUID.
+    #
+    # Returns a String.
+    def generate_ccid
+      UUID.new.generate(:compact)
     end
   end
 end
