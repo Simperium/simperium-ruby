@@ -6,7 +6,6 @@ module Simperium
 
       defaults = { :host => nil, :scheme => 'https', :clientid => nil }
 
-
       unless options.empty?
         options = defaults.merge(options)
       else
