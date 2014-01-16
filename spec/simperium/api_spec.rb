@@ -2,6 +2,7 @@ require 'spec_helper'
 
 require 'simperium'
 require 'simperium/api'
+require 'simperium/bucket'
 
 describe Simperium::Api, '#method_missing?' do
   let(:api) { Simperium::Api.new('blazing-saddles', '123456') }
