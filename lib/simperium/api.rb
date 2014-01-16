@@ -1,11 +1,11 @@
 module Simperium
   class Api
-    attr_reader :app_id
-    attr_reader :auth_token
+    attr_reader :app_id, :token, :options
 
-    def initialize(app_id, auth_token)
+    def initialize(app_id, auth_token, options = {})
       @app_id  = app_id
       @token   = auth_token
+      @options = options
 
       @cache   = {}
     end
@@ -17,7 +17,7 @@ module Simperium
 
     def method_missing(method_sym, *arguments, &block)
       unless method_sym.to_s =~ /=$/ # Ignore setters
-        bucket_cache method_sym, Simperium::Bucket.new(@app_id, @token, method_sym)
+        bucket_cache method_sym, Simperium::Bucket.new(@app_id, @token, method_sym, @options)
       end
     end
 

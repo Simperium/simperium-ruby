@@ -6,6 +6,7 @@ require 'uuid'
 
 require 'simperium/auth'
 require 'simperium/api'
+require 'simperium/admin_api'
 require 'simperium/sp_user'
 require 'simperium/error_handling'
 
@@ -15,12 +16,12 @@ UUID.state_file = false
 module Simperium
   class Bucket
     def initialize(appname, auth_token, bucket, options = {})
-      defaults = { :userid => nil, :host => nil, :scheme => 'https', :clientid => nil }
-      unless options.empty?
-        options = defaults.merge(options)
-      else
-        options = defaults
-      end
+      options = {
+        :userid   => nil,
+        :host     => nil,
+        :scheme   => 'https',
+        :clientid => nil
+        }.merge(options)
 
       options[:host] ||= ENV['SIMPERIUM_APIHOST'] || 'api.simperium.com'
 
