@@ -4,6 +4,9 @@ require 'securerandom'
 
 module Simperium
   class Bucket
+    attr_reader :appname, :auth_token, :bucket, :host, :scheme, :userid,
+                :clientid
+
     def initialize(appname, auth_token, bucket, options = {})
       options = {
         :userid   => nil,
@@ -12,14 +15,14 @@ module Simperium
         :clientid => nil
         }.merge(options)
 
-      options[:host] ||= ENV['SIMPERIUM_APIHOST'] || 'api.simperium.com'
-
-      @userid     = options[:userid]
-      @host       = options[:host]
-      @scheme     = options[:scheme]
       @appname    = appname
       @bucket     = bucket
       @auth_token = auth_token
+      @userid     = options[:userid]
+      @host       = options[:host] ||
+                    ENV['SIMPERIUM_APIHOST'] ||
+                    'api.simperium.com'
+      @scheme     = options[:scheme]
       @clientid   = options[:clientid] || "rb-#{generate_ccid}"
     end
 
