@@ -18,6 +18,8 @@ spec = Gem::Specification.new do |s|
 
   s.add_development_dependency('rake')
   s.add_development_dependency('mongo')
+  s.add_development_dependency('mocha')
+  s.add_development_dependency('webmock')
 
   s.files = `git ls-files`.split("\n")
   s.require_paths = ['lib']
