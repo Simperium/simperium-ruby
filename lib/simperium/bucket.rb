@@ -123,8 +123,8 @@ module Simperium
       end
     end
 
-    def new(data, ccid=nil)
-      post generate_ccid, data, :ccid => ccid
+    def new(data, options = {})
+      post generate_ccid, data, options
     end
 
     def set(item, data, options={})
