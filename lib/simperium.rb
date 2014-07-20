@@ -303,7 +303,7 @@ module Simperium
         end
 
         def changes(options={})
-            defautls = {:cv=>nil, :timeout=>nil}
+            defaults = {:cv=>nil, :timeout=>nil}
             unless options.empty?
                 options = defaults.merge(options)
             else
