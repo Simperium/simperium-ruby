@@ -310,8 +310,8 @@ module Simperium
                 options = defaults
             end
 
-            cv = option[:cv]
-            timeout = option[:timeout]
+            cv = options[:cv]
+            timeout = options[:timeout]
 
             url = "#{@appname}/#{@bucket}/changes?clientid=#{@clientid}"
             unless cv.nil?
